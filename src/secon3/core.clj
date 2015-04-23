@@ -48,6 +48,7 @@
                                     [:span (hl k) " " (hl v)]
                                     ) x))
               (gray "}")]
+    (seq? x) [:span (gray "(") (interpose " " (map hl x)) (gray ")")]
     :else (pr-str x)))
 
 (defn myeval [s]
@@ -55,7 +56,8 @@
     (let [res (with-out-str
                 (-> (read-string s)
                     (eval)
-                    (pr-str)
+                    (hl)
+                    (hc/html)
                     (println)))]
       [:div.message [:pre (hl (read-string s))] [:pre res]])
     (catch Exception e
